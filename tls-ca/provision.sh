@@ -1,11 +1,10 @@
 #!/bin/bash
+domain=${1}
 sandbox_config=/vagrant/sandbox-custom.yml
-get_sites() {
-    local value=`cat ${sandbox_config} | shyaml keys sites 2> /dev/null`
-    echo ${value:-$@}
+get_config_value() {
+    local value=`cat ${SANDBOX_CONFIG} | shyaml get-value sites.${SITE_ESCAPED}.custom.${1} 2> /dev/null`
+    echo ${value:-$2}
 }
-
-domain='get_sites'
 
 echo "${domain}"
 
