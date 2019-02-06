@@ -1,15 +1,27 @@
 #!/bin/bash
-domain=${1}
-SITE_ESCAPED=`echo ${domain} | sed 's/\./\\\\./g'`
+DOMAIN=$1
+SITE_ESCAPED=`echo ${SITE} | sed 's/\./\\\\./g'`
+REPO=$2
+BRANCH=$3
+VM_DIR=$4
+SKIP_PROVISIONING=$5
+PATH_TO_SITE=${VM_DIR}
+SITE_NAME=${SITE}
 
-sandbox_config=/vagrant/sandbox-custom.yml
+SANDBOX_CONFIG=/vagrant/sandbox-custom.yml
 
+noroot() {
+    sudo -EH -u "vagrant" "$@";
+}
+
+# Takes 2 values, a key to fetch a value for, and an optional default value
+# e.g. echo `get_config_value 'key' 'defaultvalue'`
 get_config_value() {
-    local value=`cat ${sandbox_config} | shyaml get-value sites.${SITE_ESCAPED}.custom.${1} 2> /dev/null`
+    local value=`cat ${SANDBOX_CONFIG} | shyaml get-value sites.${SITE_ESCAPED}.custom.${1} 2> /dev/null`
     echo ${value:-$2}
 }
 
-echo "${domain}"
+echo "${DOMAIN}"
 
 noroot() {
     sudo -EH -u "vagrant" "$@";
