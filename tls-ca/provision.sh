@@ -1,6 +1,6 @@
 #!/bin/bash
 domain=${1}
-SITE_ESCAPED=`echo ${SITE} | sed 's/\./\\\\./g'`
+SITE_ESCAPED=`echo ${domain} | sed 's/\./\\\\./g'`
 
 sandbox_config=/vagrant/sandbox-custom.yml
 
