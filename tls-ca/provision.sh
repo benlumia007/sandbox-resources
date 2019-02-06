@@ -38,3 +38,5 @@ if [[ ! -d "/vagrant/certificates/${domain}" ]]; then
 else
     echo "${domain} has been generated."
 fi
+
+echo "${domain"
