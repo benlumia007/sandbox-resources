@@ -1,11 +1,6 @@
 #!/bin/bash
-domain=${domain}
 sandbox_config=/vagrant/sandbox-custom.yml
 
-get_config_value() {
-    local value=`cat ${sandbox_config} | shyaml get-value sites.${SITE_ESCAPED}.custom.${1} 2> /dev/null`
-    echo ${value:-$2}
-}
 noroot() {
     sudo -EH -u "vagrant" "$@";
 }
@@ -18,6 +13,13 @@ if [[ ! -d "/vagrant/certificates/ca" ]]; then
 else
     echo "a root certificate of ca has been generated."
 fi
+
+get_sites() {
+    local value=`cat ${sandbox_config} | shyaml keys sites 2> /dev/null`
+    echo ${value:-$@}
+}
+
+domain='get_sites'
 
 if [[ ! -d "/vagrant/certificates/${domain}" ]]; then
     mkdir -p "/vagrant/certificates/${domain}"
