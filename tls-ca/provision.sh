@@ -21,7 +21,7 @@ get_config_value() {
     echo ${value:-$2}
 }
 
-echo "${DOMAIN}"
+echo `get_config_value`
 
 noroot() {
     sudo -EH -u "vagrant" "$@";
