@@ -11,7 +11,7 @@ get_sites() {
     echo ${value:-$@}
 }
 
-domain=`ge_sites`
+domain=`get_sites`
 
 echo "${domain}"
 
