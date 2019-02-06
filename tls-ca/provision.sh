@@ -11,7 +11,9 @@ get_sites() {
     echo ${value:-$@}
 }
 
-echo `get_sites`
+domain=`ge_sites`
+
+echo "${domain}"
 
 noroot() {
     sudo -EH -u "vagrant" "$@";
