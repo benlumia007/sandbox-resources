@@ -1,27 +1,17 @@
 #!/bin/bash
-DOMAIN=$1
-SITE_ESCAPED=`echo ${SITE} | sed 's/\./\\\\./g'`
-REPO=$2
-BRANCH=$3
-VM_DIR=$4
-SKIP_PROVISIONING=$5
-PATH_TO_SITE=${VM_DIR}
-SITE_NAME=${SITE}
 
-SANDBOX_CONFIG=/vagrant/sandbox-custom.yml
+sandbox_config=/vagrant/sandbox-custom.yml
 
 noroot() {
     sudo -EH -u "vagrant" "$@";
 }
 
-# Takes 2 values, a key to fetch a value for, and an optional default value
-# e.g. echo `get_config_value 'key' 'defaultvalue'`
-get_config_value() {
-    local value=`cat ${SANDBOX_CONFIG} | shyaml get-value sites.${SITE_ESCAPED}.custom.${1} 2> /dev/null`
-    echo ${value:-$2}
+get_sites() {
+    local value=`cat ${sandbox_config} | shyaml keys sites 2> /dev/null`
+    echo ${value:-$@}
 }
 
-echo `get_config_value`
+echo `get_sites`
 
 noroot() {
     sudo -EH -u "vagrant" "$@";
@@ -35,4 +25,3 @@ if [[ ! -d "/vagrant/certificates/ca" ]]; then
 else
     echo "a root certificate of ca has been generated."
 fi
-
