@@ -1,5 +1,13 @@
 #!/bin/bash
 sandbox_config=/vagrant/sandbox-custom.yml
+get_sites() {
+    local value=`cat ${sandbox_config} | shyaml keys sites 2> /dev/null`
+    echo ${value:-$@}
+}
+
+domain='get_sites'
+
+echo "${domain}"
 
 noroot() {
     sudo -EH -u "vagrant" "$@";
@@ -14,11 +22,3 @@ else
     echo "a root certificate of ca has been generated."
 fi
 
-get_sites() {
-    local value=`cat ${sandbox_config} | shyaml keys sites 2> /dev/null`
-    echo ${value:-$@}
-}
-
-domain='get_sites'
-
-echo "${domain}"
