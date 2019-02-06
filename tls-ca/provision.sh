@@ -1,6 +1,9 @@
 #!/bin/bash
 domain=${1}
+SITE_ESCAPED=`echo ${SITE} | sed 's/\./\\\\./g'`
+
 sandbox_config=/vagrant/sandbox-custom.yml
+
 get_config_value() {
     local value=`cat ${SANDBOX_CONFIG} | shyaml get-value sites.${SITE_ESCAPED}.custom.${1} 2> /dev/null`
     echo ${value:-$2}
