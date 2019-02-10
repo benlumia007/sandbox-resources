@@ -11,5 +11,5 @@ if [[ ! -d "/srv/www/dashboard/public_html/phpmyadmin" ]]; then
     echo "extracting phpMyAdmin-4.8.5-all-languages"
     wget https://files.phpmyadmin.net/phpMyAdmin/4.8.5/phpMyAdmin-4.8.5-all-languages.zip -O phpmyadmin.zip
     unzip phpmyadmin.zip
-    mv "/srv/www/dashboard/public_html/phpmydmin/phpMyAdmin-4.8.5-all-languages/*" "/srv/www/dashboard/public_html/phpmyadmin"
+    cp -r "phpmydmin/phpMyAdmin-4.8.5-all-languages/*" "/srv/www/dashboard/public_html/phpmyadmin"
 fi
