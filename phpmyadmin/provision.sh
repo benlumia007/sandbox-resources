@@ -4,10 +4,10 @@ noroot() {
     sudo -EH -u "vagrant" "$@";
 }
 
-if [[ ! -d "/srv/www/dashboard/phpmyadmin" ]]; then
+if [[ ! -d "/srv/www/dashboard/public_html/phpmyadmin" ]]; then
     echo "creating folder phpmyadmin"
-    mkdir -p "/srv/www/dashboard/phpmydmin"
-    cd "/srv/www/dashboard/phpmyadmin"
+    mkdir -p "/srv/www/dashboard/public_html/phpmydmin"
+    cd "/srv/www/dashboard/public_html/phpmyadmin"
     noroot wget https://files.phpmyadmin.net/phpMyAdmin/4.8.5/phpMyAdmin-4.8.5-all-languages.zip -O phpmydmin.zip
     noroot unzip phpmyadmin.zip
 fi
