@@ -37,3 +37,12 @@ for domain in `get_sites`; do
         echo "${domain} has been generated."
     fi
 done
+
+  if [[ ! -d "/vagrant/certificates/dashboard" ]]; then
+      mkdir -p "/vagrant/certificates/dashboard"
+      cp "/srv/config/certificates/domain.ext" "/vagrant/certificates/dashboard/dashboard.ext"
+      sed -i -e "s/{{DOMAIN}}/dashboard/g" "/vagrant/certificates/dashboard/dashboard.ext"
+      noroot openssl genrsa -out "/vagrant/certificates/dashboard/dashboard.key" 4096
+      noroot openssl req -new -key "/vagrant/certificates/dashboard/dashboard.key" -out "/vagrant/certificates/dashboard/dashboard.csr" -subj "/CN=dashboard"
+      noroot openssl x509 -req -in "/vagrant/certificates/dashboard/dashboard.csr" -CA "/vagrant/certificates/ca/ca.crt" -CAkey "/vagrant/certificates/ca/ca.key" -CAcreateserial -out "/vagrant/certificates/dashboard/dashboard.crt" -days 3650 -sha256 -extfile "/vagrant/certificates/dashboard/dashboard.ext"
+  fi
