@@ -30,7 +30,7 @@ for domain in `get_sites`; do
         sed -i -e "s/{{DOMAIN}}/${domain}/g" "/vagrant/certificates/${domain}/${domain}.ext"
 
         noroot openssl genrsa -out "/vagrant/certificates/${domain}/${domain}.key" 4096
-        noroot openssl req -new -key "/vagrant/certificates/${domain}/${domain}.key" -out "/vagrant/certificates/${domain}/${domain}.csr" -subj "/CN=${domain}"
+        noroot openssl req -new -key "/vagrant/certificates/${domain}/${domain}.key" -out "/vagrant/certificates/${domain}/${domain}.csr" -subj "/CN=*.${domain}.test"
         noroot openssl x509 -req -in "/vagrant/certificates/${domain}/${domain}.csr" -CA "/vagrant/certificates/ca/ca.crt" -CAkey "/vagrant/certificates/ca/ca.key" -CAcreateserial -out "/vagrant/certificates/${domain}/${domain}.crt" -days 3650 -sha256 -extfile "/vagrant/certificates/${domain}/${domain}.ext"
         sed -i '/certificate/s/^#//g' "/etc/apache2/sites-available/${domain}.conf"
     else
@@ -43,6 +43,6 @@ done
       cp "/srv/config/certificates/domain.ext" "/vagrant/certificates/dashboard/dashboard.ext"
       sed -i -e "s/{{DOMAIN}}/dashboard/g" "/vagrant/certificates/dashboard/dashboard.ext"
       noroot openssl genrsa -out "/vagrant/certificates/dashboard/dashboard.key" 4096
-      noroot openssl req -new -key "/vagrant/certificates/dashboard/dashboard.key" -out "/vagrant/certificates/dashboard/dashboard.csr" -subj "/CN=dashboard"
+      noroot openssl req -new -key "/vagrant/certificates/dashboard/dashboard.key" -out "/vagrant/certificates/dashboard/dashboard.csr" -subj "/CN=*.dashboard.test"
       noroot openssl x509 -req -in "/vagrant/certificates/dashboard/dashboard.csr" -CA "/vagrant/certificates/ca/ca.crt" -CAkey "/vagrant/certificates/ca/ca.key" -CAcreateserial -out "/vagrant/certificates/dashboard/dashboard.crt" -days 3650 -sha256 -extfile "/vagrant/certificates/dashboard/dashboard.ext"
   fi
