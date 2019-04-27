@@ -1,13 +1,15 @@
 #!/bin/bash
 
+domain=$1
+
 sandbox_config=/vagrant/sandbox-custom.yml
 
 noroot() {
     sudo -EH -u "vagrant" "$@";
 }
 
-get_sites() {
-    local value=`cat ${sandbox_config} | shyaml keys sites 2> /dev/null`
+get_config_value() {
+    local value=`cat ${sandbox_config} | shyaml get-value sites.${1} 2> /dev/null`
     echo ${value:-$@}
 }
 
