@@ -1,6 +1,6 @@
 #!/bin/bash
 
-domain=$1
+domains=$1
 
 sandbox_config=/vagrant/sandbox-custom.yml
 
@@ -25,7 +25,7 @@ else
     echo "a root certificate of ca has been generated."
 fi
 
-for domain in `get_sites`; do
+for domain in domains do
     if [[ ! -d "/vagrant/certificates/${domain}" ]]; then
         mkdir -p "/vagrant/certificates/${domain}"
         cp "/srv/config/certificates/domain.ext" "/vagrant/certificates/${domain}/${domain}.ext"
