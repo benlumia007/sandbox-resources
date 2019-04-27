@@ -15,12 +15,6 @@ noroot() {
     sudo -EH -u "vagrant" "$@";
 }
 
-domain =`get_sites`
-
-echo $domain
-exit 0
-
-
 if [[ ! -d "/vagrant/certificates/ca" ]]; then
     noroot mkdir -p "/vagrant/certificates/ca"
     noroot openssl genrsa -out "/vagrant/certificates/ca/ca.key" 4096
