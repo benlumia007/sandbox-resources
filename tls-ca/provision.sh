@@ -47,6 +47,6 @@ if [[ ! -d "/srv/certificates/dashboard" ]]; then
   noroot openssl x509 -req -in "/srv/certificates/dashboard/dashboard.csr" -CA "/srv/certificates/ca/ca.crt" -CAkey "/srv/certificates/ca/ca.key" -CAcreateserial -out "/srv/certificates/dashboard/dashboard.crt" -days 3650 -sha256 -extfile "/srv/certificates/dashboard/dashboard.ext"
 fi
 
-if [[ ! -d "/vagrant/certificates ]]; then
+if [[ ! -d "/vagrant/certificates" ]]; then
     ln -s /srv/certificates /vagrant/certificates
 fi
