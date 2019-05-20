@@ -15,34 +15,34 @@ noroot() {
     sudo -EH -u "vagrant" "$@";
 }
 
-if [[ ! -d "/vagrant/certificates/ca" ]]; then
-    noroot mkdir -p "/vagrant/certificates/ca"
-    noroot openssl genrsa -out "/vagrant/certificates/ca/ca.key" 4096
-    noroot openssl req -x509 -new -nodes -key "/vagrant/certificates/ca/ca.key" -sha256 -days 3650 -out "/vagrant/certificates/ca/ca.crt" -subj "/CN=Sandbox Internal CA"
+if [[ ! -d "/srv/certificates/ca" ]]; then
+    noroot mkdir -p "/srv/certificates/ca"
+    noroot openssl genrsa -out "/srv/certificates/ca/ca.key" 4096
+    noroot openssl req -x509 -new -nodes -key "/srv/certificates/ca/ca.key" -sha256 -days 3650 -out "/srv/certificates/ca/ca.crt" -subj "/CN=Sandbox Internal CA"
 else
     echo "a root certificate of ca has been generated."
 fi
 
 for domain in `get_sites`; do
-    if [[ ! -d "/vagrant/certificates/${domain}" ]]; then
-        mkdir -p "/vagrant/certificates/${domain}"
-        cp "/srv/config/certificates/domain.ext" "/vagrant/certificates/${domain}/${domain}.ext"
-        sed -i -e "s/{{DOMAIN}}/${domain}/g" "/vagrant/certificates/${domain}/${domain}.ext"
+    if [[ ! -d "/srv/certificates/${domain}" ]]; then
+        mkdir -p "/srv/certificates/${domain}"
+        cp "/srv/config/certificates/domain.ext" "/srv/certificates/${domain}/${domain}.ext"
+        sed -i -e "s/{{DOMAIN}}/${domain}/g" "/srv/certificates/${domain}/${domain}.ext"
 
-        noroot openssl genrsa -out "/vagrant/certificates/${domain}/${domain}.key" 4096
-        noroot openssl req -new -key "/vagrant/certificates/${domain}/${domain}.key" -out "/vagrant/certificates/${domain}/${domain}.csr" -subj "/CN=*.${domain}.test"
-        noroot openssl x509 -req -in "/vagrant/certificates/${domain}/${domain}.csr" -CA "/vagrant/certificates/ca/ca.crt" -CAkey "/vagrant/certificates/ca/ca.key" -CAcreateserial -out "/vagrant/certificates/${domain}/${domain}.crt" -days 3650 -sha256 -extfile "/vagrant/certificates/${domain}/${domain}.ext"
+        noroot openssl genrsa -out "/srv/certificates/${domain}/${domain}.key" 4096
+        noroot openssl req -new -key "/srv/certificates/${domain}/${domain}.key" -out "/srv/certificates/${domain}/${domain}.csr" -subj "/CN=*.${domain}.test"
+        noroot openssl x509 -req -in "/srv/certificates/${domain}/${domain}.csr" -CA "/srv/certificates/ca/ca.crt" -CAkey "/srv/certificates/ca/ca.key" -CAcreateserial -out "/srv/certificates/${domain}/${domain}.crt" -days 3650 -sha256 -extfile "/srv/certificates/${domain}/${domain}.ext"
         sed -i '/certificate/s/^#//g' "/etc/apache2/sites-available/${domain}.conf"
     else
         echo "${domain} has been generated."
     fi
 done
 
-  if [[ ! -d "/vagrant/certificates/dashboard" ]]; then
-      mkdir -p "/vagrant/certificates/dashboard"
-      cp "/srv/config/certificates/domain.ext" "/vagrant/certificates/dashboard/dashboard.ext"
-      sed -i -e "s/{{DOMAIN}}/dashboard/g" "/vagrant/certificates/dashboard/dashboard.ext"
-      noroot openssl genrsa -out "/vagrant/certificates/dashboard/dashboard.key" 4096
-      noroot openssl req -new -key "/vagrant/certificates/dashboard/dashboard.key" -out "/vagrant/certificates/dashboard/dashboard.csr" -subj "/CN=*.dashboard.test"
-      noroot openssl x509 -req -in "/vagrant/certificates/dashboard/dashboard.csr" -CA "/vagrant/certificates/ca/ca.crt" -CAkey "/vagrant/certificates/ca/ca.key" -CAcreateserial -out "/vagrant/certificates/dashboard/dashboard.crt" -days 3650 -sha256 -extfile "/vagrant/certificates/dashboard/dashboard.ext"
+  if [[ ! -d "/srv/certificates/dashboard" ]]; then
+      mkdir -p "/srv/certificates/dashboard"
+      cp "/srv/config/certificates/domain.ext" "/srv/certificates/dashboard/dashboard.ext"
+      sed -i -e "s/{{DOMAIN}}/dashboard/g" "/srv/certificates/dashboard/dashboard.ext"
+      noroot openssl genrsa -out "/srv/certificates/dashboard/dashboard.key" 4096
+      noroot openssl req -new -key "/srv/certificates/dashboard/dashboard.key" -out "/srv/certificates/dashboard/dashboard.csr" -subj "/CN=*.dashboard.test"
+      noroot openssl x509 -req -in "/srv/certificates/dashboard/dashboard.csr" -CA "/srv/certificates/ca/ca.crt" -CAkey "/srv/certificates/ca/ca.key" -CAcreateserial -out "/srv/certificates/dashboard/dashboard.crt" -days 3650 -sha256 -extfile "/srv/certificates/dashboard/dashboard.ext"
   fi
