@@ -20,7 +20,7 @@ if [[ ! -d "/srv/certificates/ca" ]]; then
     noroot openssl genrsa -out "/srv/certificates/ca/ca.key" 4096
     noroot openssl req -x509 -new -nodes -key "/srv/certificates/ca/ca.key" -sha256 -days 3650 -out "/srv/certificates/ca/ca.crt" -subj "/CN=Sandbox Internal CA"
 else
-    echo "a root certificate of ca has been generated."
+    echo "a certificate for ca has been generated."
 fi
 
 for domain in `get_sites`; do
