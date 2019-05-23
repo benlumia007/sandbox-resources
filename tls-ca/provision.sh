@@ -20,7 +20,7 @@ if [[ ! -d "/srv/certificates/ca" ]]; then
     noroot openssl genrsa -out "/srv/certificates/ca/ca.key" 4096
     noroot openssl req -x509 -new -nodes -key "/srv/certificates/ca/ca.key" -sha256 -days 3650 -out "/srv/certificates/ca/ca.crt" -subj "/CN=Sandbox Internal CA"
 else
-    echo "a certificate for ca has been generated."
+    echo "a root certificate for ca has been generated."
 fi
 
 for domain in `get_sites`; do
@@ -34,7 +34,7 @@ for domain in `get_sites`; do
         noroot openssl x509 -req -in "/srv/certificates/${domain}/${domain}.csr" -CA "/srv/certificates/ca/ca.crt" -CAkey "/srv/certificates/ca/ca.key" -CAcreateserial -out "/srv/certificates/${domain}/${domain}.crt" -days 3650 -sha256 -extfile "/srv/certificates/${domain}/${domain}.ext"
         sed -i '/certificate/s/^#//g' "/etc/apache2/sites-available/${domain}.conf"
     else
-        echo "${domain} has been generated."
+        echo " a certificate for ${domain}.test has been generated."
     fi
 done
 
