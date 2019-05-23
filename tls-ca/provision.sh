@@ -34,7 +34,7 @@ for domain in `get_sites`; do
         noroot openssl x509 -req -in "/srv/certificates/${domain}/${domain}.csr" -CA "/srv/certificates/ca/ca.crt" -CAkey "/srv/certificates/ca/ca.key" -CAcreateserial -out "/srv/certificates/${domain}/${domain}.crt" -days 3650 -sha256 -extfile "/srv/certificates/${domain}/${domain}.ext"
         sed -i '/certificate/s/^#//g' "/etc/apache2/sites-available/${domain}.conf"
     else
-        echo " a certificate for ${domain}.test has been generated."
+        echo "a certificate for ${domain}.test has been generated."
     fi
 done
 
