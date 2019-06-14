@@ -32,7 +32,7 @@ for domain in `get_sites`; do
         noroot openssl genrsa -out "/srv/certificates/${domain}/${domain}.key" 4096
         noroot openssl req -new -key "/srv/certificates/${domain}/${domain}.key" -out "/srv/certificates/${domain}/${domain}.csr" -subj "/CN=*.${domain}.test"
         noroot openssl x509 -req -in "/srv/certificates/${domain}/${domain}.csr" -CA "/srv/certificates/ca/ca.crt" -CAkey "/srv/certificates/ca/ca.key" -CAcreateserial -out "/srv/certificates/${domain}/${domain}.crt" -days 3650 -sha256 -extfile "/srv/certificates/${domain}/${domain}.ext"
-        sed -i '/certificate/s/^#//g' "/etc/apache2/sites-available/${domain}.conf"
+        sed -i '/certificate/s/^#//g' "/etc/nginx/conf.d/${domain}.conf"
     else
         echo "certificate for ${domain}.test has been generated."
     fi
