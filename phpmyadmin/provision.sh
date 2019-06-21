@@ -5,7 +5,6 @@ noroot() {
 }
 
 if [[ ! -d "/srv/www/dashboard/public_html/phpmyadmin" ]]; then
-    echo "creating folder phpmyadmin"
     mkdir -p "/srv/www/dashboard/public_html/phpmyadmin"
     cd "/srv/www/dashboard/public_html/phpmyadmin"
     echo "extracting phpMyAdmin-4.8.5-all-languages"
@@ -15,5 +14,5 @@ if [[ ! -d "/srv/www/dashboard/public_html/phpmyadmin" ]]; then
     rm -rf phpMyAdmin-4.9.0.1-all-languages
     rm phpmyadmin.zip
 else
-    echo "phpmyadmin already installed."
+    echo "phpMyAdmin already installed."
 fi
