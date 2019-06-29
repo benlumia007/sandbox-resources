@@ -18,7 +18,7 @@ noroot() {
 if [[ ! -d "/srv/certificates/ca" ]]; then
     noroot mkdir -p "/srv/certificates/ca"
     noroot openssl genrsa -out "/srv/certificates/ca/ca.key" 4096
-    noroot openssl req -x509 -new -nodes -key "/srv/certificates/ca/ca.key" -sha256 -days 3650 -out "/srv/certificates/ca/ca.crt" -subj "/CN=Sandbox Internal CA"
+    noroot openssl req -x509 -new -nodes -key "/srv/certificates/ca/ca.key" -sha256 -days 365 -out "/srv/certificates/ca/ca.crt" -subj "/CN=Sandbox Internal CA"
 else
     echo "Certificate: ca.crt has been generated."
 fi
