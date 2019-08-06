@@ -13,6 +13,4 @@ if [[ ! -d "/srv/www/dashboard/public_html/phpmyadmin" ]]; then
     mv phpMyAdmin-4.9.0.1-all-languages/* "/srv/www/dashboard/public_html/phpmyadmin"
     rm -rf phpMyAdmin-4.9.0.1-all-languages
     rm phpmyadmin.zip
-else
-    echo "phpMyAdmin already installed."
 fi
