@@ -19,8 +19,6 @@ if [[ ! -d "/srv/certificates/ca" ]]; then
     noroot mkdir -p "/srv/certificates/ca"
     noroot openssl genrsa -out "/srv/certificates/ca/ca.key" 4096
     noroot openssl req -x509 -new -nodes -key "/srv/certificates/ca/ca.key" -sha256 -days 365 -out "/srv/certificates/ca/ca.crt" -subj "/CN=Sandbox Internal CA"
-else
-    echo "Certificate: ca.crt has been generated."
 fi
 
 for domain in `get_sites`; do
@@ -33,8 +31,6 @@ for domain in `get_sites`; do
         noroot openssl req -new -key "/srv/certificates/${domain}/${domain}.key" -out "/srv/certificates/${domain}/${domain}.csr" -subj "/CN=*.${domain}.test"
         noroot openssl x509 -req -in "/srv/certificates/${domain}/${domain}.csr" -CA "/srv/certificates/ca/ca.crt" -CAkey "/srv/certificates/ca/ca.key" -CAcreateserial -out "/srv/certificates/${domain}/${domain}.crt" -days 3650 -sha256 -extfile "/srv/certificates/${domain}/${domain}.ext"
         sed -i '/certificate/s/^#//g' "/etc/nginx/conf.d/${domain}.conf"
-    else
-        echo "Certificate: ${domain}.crt has been generated."
     fi
 done
 
