@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sandbox_config="/vagrant/sandbox-custom.yml"
+sandbox_config="/srv/config/sandbox-custom.yml"
 
 noroot() {
     sudo -EH -u "vagrant" "$@";
