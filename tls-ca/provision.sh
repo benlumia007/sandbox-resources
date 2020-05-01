@@ -29,19 +29,17 @@ for domain in `get_sites`; do
 
     provision=`get_site_provision`
 
-    echo "${domain} is set to ${provision}"
+    if [[ "True" == ${provision} ]]; then
+        if [[ ! -d "/srv/certificates/${domain}" ]]; then
+            mkdir -p "/srv/certificates/${domain}"
+            cp "/srv/config/certificates/domain.ext" "/srv/certificates/${domain}/${domain}.ext"
+            sed -i -e "s/{{DOMAIN}}/${domain}/g" "/srv/certificates/${domain}/${domain}.ext"
 
-
-
-    if [[ ! -d "/srv/certificates/${domain}" ]]; then
-        mkdir -p "/srv/certificates/${domain}"
-        cp "/srv/config/certificates/domain.ext" "/srv/certificates/${domain}/${domain}.ext"
-        sed -i -e "s/{{DOMAIN}}/${domain}/g" "/srv/certificates/${domain}/${domain}.ext"
-
-        noroot openssl genrsa -out "/srv/certificates/${domain}/${domain}.key" 4096
-        noroot openssl req -new -key "/srv/certificates/${domain}/${domain}.key" -out "/srv/certificates/${domain}/${domain}.csr" -subj "/CN=*.${domain}.test"
-        noroot openssl x509 -req -in "/srv/certificates/${domain}/${domain}.csr" -CA "/srv/certificates/ca/ca.crt" -CAkey "/srv/certificates/ca/ca.key" -CAcreateserial -out "/srv/certificates/${domain}/${domain}.crt" -days 365 -sha256 -extfile "/srv/certificates/${domain}/${domain}.ext"
-        sed -i '/certificate/s/^#//g' "/etc/nginx/conf.d/${domain}.conf"
+            noroot openssl genrsa -out "/srv/certificates/${domain}/${domain}.key" 4096
+            noroot openssl req -new -key "/srv/certificates/${domain}/${domain}.key" -out "/srv/certificates/${domain}/${domain}.csr" -subj "/CN=*.${domain}.test"
+            noroot openssl x509 -req -in "/srv/certificates/${domain}/${domain}.csr" -CA "/srv/certificates/ca/ca.crt" -CAkey "/srv/certificates/ca/ca.key" -CAcreateserial -out "/srv/certificates/${domain}/${domain}.crt" -days 365 -sha256 -extfile "/srv/certificates/${domain}/${domain}.ext"
+            sed -i '/certificate/s/^#//g' "/etc/nginx/conf.d/${domain}.conf"
+        fi
     fi
 done
 
