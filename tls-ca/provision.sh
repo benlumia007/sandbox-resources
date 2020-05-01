@@ -22,6 +22,16 @@ if [[ ! -d "/srv/certificates/ca" ]]; then
 fi
 
 for domain in `get_sites`; do
+    get_provision() {
+      local value=`cat ${sandbox_config} | shyaml keys sites.${domain}.provision 2> /dev/null`
+      echo ${value:-$@}
+    }
+
+    provision = `get_provision`
+
+    echo "${domain} is set to ${provision}"
+
+
     if [[ ! -d "/srv/certificates/${domain}" ]]; then
         mkdir -p "/srv/certificates/${domain}"
         cp "/srv/config/certificates/domain.ext" "/srv/certificates/${domain}/${domain}.ext"
